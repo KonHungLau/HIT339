@@ -1,0 +1,63 @@
+﻿@model ManageRolesViewModel
+
+@{
+    if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    else if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+}
+
+
+
+
+<h2>Manage User Roles</h2>
+
+<form method="post" asp-action="AssignRole">
+    <label>User: </label>
+    <select name="userId">
+        @foreach (var user in Model.Users)
+        {
+            <option value="@user.Id">@user.UserName</option>
+        }
+    </select>
+
+    <label>Role: </label>
+    <select name="roleName">
+        @foreach (var role in Model.Roles)
+        {
+            <option value="@role.Name">@role.Name</option>
+        }
+    </select>
+
+    <button type="submit">Assign Role</button>
+</form>
+
+<br />
+
+<form method="post" asp-action="RemoveRole">
+    <label>User: </label>
+    <select name="userId">
+        @foreach (var user in Model.Users)
+        {
+            <option value="@user.Id">@user.UserName</option>
+        }
+    </select>
+
+    <label>Role: </label>
+    <select name="roleName">
+        @foreach (var role in Model.Roles)
+        {
+            <option value="@role.Name">@role.Name</option>
+        }
+    </select>
+
+    <button type="submit">Remove Role</button>
+</form>

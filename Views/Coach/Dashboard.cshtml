@@ -1,0 +1,172 @@
+﻿@using AnyoneForTennis.Models
+@using AnyoneForTennis.Data
+@model CoachViewModel
+
+@{
+    ViewData["Title"] = "Coach Dashboard";
+}
+
+<style>
+    /* Base Styles */
+    html, body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        height: 100%; 
+        margin: 0; 
+    }
+
+    .container-fluid {
+        height: 100%; 
+    }
+
+    .row {
+        height: 100%;
+    }
+
+
+
+    /* Sidebar styles */
+    .sidebar {
+        background-color: #003366;
+        color: white;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 80vh;
+    }
+
+        .sidebar img {
+            width: 65%; 
+            border-radius: 50%;
+            margin-left:46px;
+            margin-top:20px;
+      
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin-left: 20px;
+        }
+
+            .sidebar ul li {
+                margin-bottom: 30px;
+                display: flex;
+                align-items: center;
+            }
+
+                .sidebar ul li i {
+                    margin-right: 20px;
+                }
+
+        .sidebar .btn {
+            background-color: white;
+            color: #003366;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 70%;
+            margin-left: 38px;
+            margin-bottom: 200px;
+        }
+
+    /* Main content styles */
+    .main-content {
+        padding: 20px;
+        background-color: white;
+    }
+
+    .section {
+        margin-bottom: 30px;
+    }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f8f9fa;
+            padding-bottom: 10px;
+        }
+
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .list-group-item i {
+            margin-right: 10px;
+        }
+
+    .btn-view-all {
+        background-color: #003366 !important;   
+        color: white !important;
+        border: none; 
+        transition: 0.3s; 
+    }
+
+        .btn-view-all:hover {
+            background-color: #002244; 
+        }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar">
+            <img src="https://via.placeholder.com/150" alt="Coach Profile Picture">
+            <ul>
+                <li><i class="fas fa-user"></i>@Model.Coach.FirstName @Model.Coach.LastName</li>
+                <li><i class="fas fa-address-card"></i>@Model.Coach.Biography</li>
+                <li><i class="fas fa-envelope"></i>johndoe@email.com</li>
+                <li><i class="fas fa-phone"></i>Phone: +123-456-7890</li>
+            </ul>
+            <a asp-controller="Coach" asp-action="EditProfile" class="btn">Edit Profile</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 main-content">
+            <!-- Upcoming Schedules Section -->
+            <div class="section">
+                <h2><i class="fas fa-calendar-alt"></i> Upcoming Schedules</h2>
+                <div class="card bg-light">
+                    <ul class="list-group">
+                        @foreach (var schedule in Model.UpcomingSchedules)
+                        {
+                            <li class="list-group-item">
+                                <span><i class="fas fa-clock"></i>@schedule.Date.ToString("g")</span>
+                                <span>@schedule.EventName</span>
+                                <span>@schedule.Location</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Enrolled Application Users Section -->
+            <div class="section">
+                <h2><i class="fas fa-users"></i> Enrolled Users</h2>
+                <div class="card bg-secondary">
+                    <ul class="list-group">
+                        @foreach (var user in Model.EnrolledApplicationUsers)
+                        {
+                            <li class="list-group-item bg-secondary">
+                                <span><i class="fas fa-user"></i>@user.FirstName @user.LastName</span>
+                                <span>@user.Email</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <a asp-controller="Coach" asp-action="EnrolledApplicationUsers" class="btn btn-view-all mt-3">View All Users</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap and Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">

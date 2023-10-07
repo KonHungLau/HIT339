@@ -1,0 +1,125 @@
+﻿@using Newtonsoft.Json;
+@using Newtonsoft.Json.Serialization;
+@using AnyoneForTennis.Models;
+@using AnyoneForTennis.Data;
+
+@model IEnumerable<AnyoneForTennis.Models.Schedules>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<style>
+    /* Add some basic styling for the dashboard */
+    .admin-actions {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px; /* provide gap between buttons */
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="admin-actions">
+    <a href="/Admin/CreateSchedule" class="btn btn-primary">
+        <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> Create Schedule
+    </a>
+    <a href="/Admin/AdminViewScheduleDetails" class="btn btn-info">
+        <i class="fa fa-users" aria-hidden="true"></i> Admin View ScheduleDetails
+    </a>
+    <a href="/Admin/ViewMembers" class="btn btn-warning">
+        <i class="fa fa-list" aria-hidden="true"></i> View All Members
+    </a>
+    <a asp-action="#" asp-controller="Admin" class="btn btn-secondary">
+        <i class="fa fa-cogs" aria-hidden="true"></i> action 4
+    </a>
+    <!-- Add more buttons for other admin actions -->
+</div>
+
+@{
+    var settings = new Newtonsoft.Json.JsonSerializerSettings
+            {
+                DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat,
+                DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore // Fixes circular of models loop by just ignoring it lol
+            };
+    var schedulesJson = Newtonsoft.Json.JsonConvert.SerializeObject(Model, settings);
+}
+
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-primary w-50" id="previous" onclick="previous()">Previous</button>
+                    <button class="btn btn-outline-primary w-50" id="next" onclick="next()">Next</button>
+                </div>
+                <h3 class="card-header" id="monthAndYear"></h3>
+                <table class="table table-bordered table-responsive-sm" id="calendar">
+                    <thead>
+                        <tr>
+                            <th>Sun</th>
+                            <th>Mon</th>
+                            <th>Tue</th>
+                            <th>Wed</th>
+                            <th>Thu</th>
+                            <th>Fri</th>
+                            <th>Sat</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                    </tbody>
+                </table>
+                <br />
+                <form class="form-inline">
+                    <div class="w-50 d-flex">
+                        <label class="lead mr-2 ml-2" for="month">Jump:</label>
+                        <!-- TODO: How to split without using "style" tag in bootstrap "w-75" does not work how I thought it would -->
+                        <select class="form-control w-75 mr-2" name="month" id="month" onchange="jump()" style="max-width: 75%;">
+                            <option value=0>January</option>
+                            <option value=1>February</option>
+                            <option value=2>March</option>
+                            <option value=3>April</option>
+                            <option value=4>May</option>
+                            <option value=5>June</option>
+                            <option value=6>July</option>
+                            <option value=7>August</option>
+                            <option value=8>September</option>
+                            <option value=9>October</option>
+                            <option value=10>November</option>
+                            <option value=11>December</option>
+                        </select>
+                        <select class="form-control w-25" name="year" id="year" onchange="jump()" style="max-width: 25%;">
+                            <option value=2022>2022</option>
+                            <option value=2023>2023</option>
+                            <option value=2024>2024</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Events</h3>
+            <ul class="list-group" id="event-list">
+                <!-- List populated by calendar JavaScript -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Optional: Add FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+<script>
+    var schedulesData = @Html.Raw(schedulesJson);
+</script>
+<script src="~/lib/calendar/scripts.js"></script>

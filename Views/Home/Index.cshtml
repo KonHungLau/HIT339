@@ -1,0 +1,200 @@
+﻿@page
+@using AnyoneForTennis.Pages
+@model IndexModel
+@{
+    if (ViewData != null && ViewData.ContainsKey("Title"))
+    {
+        ViewData["Title"] = "Home Page";
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+       
+        .jumbotron {
+            background-color: #fe4806;
+            color: #fff;
+            padding: 60px;
+            margin-bottom: 0;
+        }
+
+        body {
+            background-image: url('/images/background3.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+
+
+        .card {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+
+
+          
+            .card:hover {
+                transform: scale(1.05);
+            }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fe4806;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .btn-primary {
+            background-color: #fe4806;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+
+            .btn-primary:hover {
+                background-color: #555;
+            }
+
+
+        .navbar {
+            background-color: #000; 
+            color: #fff; 
+        }
+
+        footer {
+            background-color: #000; 
+            color: #fff; 
+        }
+
+        .specialOffer {
+            background-color: #f7c200;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeIn 1.5s; 
+        }
+
+          
+            .specialOffer:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 12px #f7c200);
+            }
+
+            .specialOffer h2 {
+                color: yellow;
+            }
+
+            .specialOffer p {
+                color: #f0f0f0;
+            }
+
+        a {
+            color: #0c1234;
+        }
+
+            a:hover {
+                color: yellow;
+            }
+
+
+        
+    </style>
+</head>
+<body>
+
+    
+    <div class="jumbotron text-center">
+        <h1>Welcome to Anyone for Tennis™</h1>
+        <p>Your Premier Tennis Community</p>
+    </div>
+
+   
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/images/schedule.png" class="card-img-top" alt="Schedule">
+                    <div class="card-body">
+                        <h5 class="card-title">View Schedules</h5>
+                        <p class="card-text">Check out our tennis schedules and see who's coaching.</p>
+                        <a href="/Enrollments/Create" class="btn btn-primary">View Schedules</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/images/coach.png" class="card-img-top" alt="Coaches">
+                    <div class="card-body">
+                        <h5 class="card-title">Meet Our Coaches</h5>
+                        <p class="card-text">Get to know our experienced tennis coaches.</p>
+                        <a href="/Home/CoachList" class="btn btn-primary">Meet Coaches</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/images/membership.png" class="card-img-top" alt="Membership">
+                    <div class="card-body">
+                        <h5 class="card-title">Join Us Today</h5>
+                        <p class="card-text">Create an account and enroll in upcoming sessions.</p>
+                        <a href="/Identity/Account/Register" class="btn btn-primary">Join Now</a>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <!-- Adjust width to 8 columns and center it -->
+                        <div class="specialOffer bg-info p-4 rounded">
+                            <h2 class="text-center text-white mb-4">Special Offer!</h2> <!-- Increase margin-bottom for separation -->
+                            @if (ViewBag.Offers != null && (ViewBag.Offers as List<AnyoneForTennis.Models.SpecialOffer>).Count > 0)
+                            {
+                                <h3 class="mb-3">Available Offers:</h3> <!-- Increase margin-bottom for separation -->
+                                <ul>
+                                    @foreach (var offer in (ViewBag.Offers as List<AnyoneForTennis.Models.SpecialOffer>))
+                                    {
+                                        <li class="mb-2">
+                                            <!-- Increase margin-bottom for each list item -->
+                                            <a asp-controller="SpecialOffers" asp-action="Details" asp-route-id="@offer.SpecialOfferId">@offer.Title</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>No special offers available at the moment.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+
+</body>
+</html>

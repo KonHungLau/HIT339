@@ -1,0 +1,30 @@
+﻿@model List<Enrollment>
+
+<h2>Enrolled Application Users</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var enrollment in Model)
+            {
+                <tr>
+                    <td>@enrollment.User.FirstName @enrollment.User.LastName</td>
+                    <td>@enrollment.User.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users have enrolled for this schedule yet.</p>
+}
+
+<a asp-controller="Schedule" asp-action="Details" asp-route-id="@Model.FirstOrDefault()?.ScheduleId" class="btn btn-secondary">Back to Schedule Details</a>

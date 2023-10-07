@@ -1,0 +1,89 @@
+﻿@model AnyoneForTennis.Models.EnrollmentViewModel
+
+@{
+    ViewData["Title"] = "Enroll in a Schedule";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Display success message -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+
+<form asp-action="Create" asp-controller="Enrollments" method="post">
+    <div class="form-group">
+        <label for="SelectedScheduleId">Select Schedule:</label>
+        @Html.DropDownListFor(model => model.SelectedScheduleId, Model.AvailableSchedules, "Select a Schedule", new { @class = "form-control", id = "SelectedScheduleId" })
+    </div>
+
+    <div class="form-group">
+        <label for="CoachName">Coach Name:</label>
+        <input asp-for="CoachName" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="CoachBio">Coach Bio:</label>
+        <textarea asp-for="CoachBio" class="form-control" readonly></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="ScheduleDate">Schedule Date:</label>
+        <input asp-for="ScheduleDate" type="date" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="EventName">Event Name:</label>
+        <input asp-for="EventName" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="Location">Location:</label>
+        <input asp-for="Location" class="form-control" readonly />
+    </div>
+
+    <!-- Add Cancel button -->
+    <div class="form-group">
+        <input type="hidden" name="redirectToCreate" value="true" />
+        <button type="submit" class="btn btn-primary">Enroll</button>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#SelectedScheduleId").change(function () {
+            var selectedId = $(this).val();
+
+            $.ajax({
+                url: "/Enrollments/GetScheduleDetails?id=" + selectedId,
+                method: "GET",
+                success: function (data) {
+                    $("#CoachName").val(data.coachName);
+                    $("#CoachBio").val(data.coachBio);
+
+                    // Format the date
+                    var date = new Date(data.scheduleDate);
+                    var day = ("0" + date.getDate()).slice(-2);
+                    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                    var formattedDate = date.getFullYear() + "-" + (month) + "-" + (day);
+                    $("#ScheduleDate").val(formattedDate);
+
+                    $("#EventName").val(data.eventName);
+                    $("#Location").val(data.location);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+    });
+</script>

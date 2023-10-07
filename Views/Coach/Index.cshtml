@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Coach Dashboard";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<nav>
+    <ul>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Coach" asp-action="Profile">Coach Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Coach" asp-action="UpcomingSchedules">Upcoming Schedules</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Coach" asp-action="EnrolledApplicationUsers">Enrolled Application Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Coach" asp-action="EditProfile">Edit Profile</a>
+        </li>
+    </ul>
+</nav>
